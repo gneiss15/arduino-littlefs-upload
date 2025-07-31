@@ -1,4 +1,5 @@
 # arduino-littlefs-upload README
+Slightly modified version of the plugin from\
 (C) 2023 Earle F. Philhower, III
 
 MIT licensed, see LICENSE.md
@@ -28,7 +29,8 @@ Make sure that you close any open `Serial Monitor` windows.
 
 ## Installation
 
-Copy the [VSIX file](https://github.com/earlephilhower/arduino-littlefs-upload/releases) to `~/.arduinoIDE/plugins/` on Mac and Linux or `C:\Users\<username>\.arduinoIDE\plugins\` on Windows (you may need to make this directory yourself beforehand). Restart the IDE.
+Copy the [latest VSIX file](/../../releases/latest) to `~/.arduinoIDE/plugins/` on Mac and Linux or `C:\Users\<username>\.arduinoIDE\plugins\` on Windows (you may need to make this directory yourself beforehand). Restart the IDE.\
+All can be found [Here](/../../releases)
 
 ## Arduino Nano ESP32 Notes
 
