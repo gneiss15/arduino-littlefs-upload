@@ -367,14 +367,32 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // ✅ PATCH: Fallback hinzufügen, wenn tool nicht gefunden wurde
-        if (!tool) {
-            // Prüfen, ob mklittlefs direkt im Tools-Ordner existiert
-            const platformPath = arduinoContext.getBuildProperties().get("runtime.platform.path");
-            const fallbackPath = path.join(platformPath, "My", "tools", "mklittlefs");
-            if (fs.existsSync(path.join(fallbackPath, mklittlefs))) {
-                tool = fallbackPath;
-            }
-        }
+        if (!tool)
+         {
+          const homeDir = process.env.HOME || process.env.USERPROFILE;
+          if (homeDir)
+           {
+            const platformBase = path.join(homeDir, ".arduino15", "packages", "esp32", "hardware", "esp32");
+            if (fs.existsSync(platformBase))
+             {
+              const versions = fs.readdirSync(platformBase).filter(d => fs.statSync(path.join(platformBase, d)).isDirectory());
+              if (versions.length > 0)
+               {
+                versions.sort().reverse(); // Neueste Version zuerst
+                const latestVersionPath = path.join(platformBase, versions[0], "My", "tools", "mklittlefs");
+                if (fs.existsSync(path.join(latestVersionPath, mklittlefs)))
+                 {
+                  tool = latestVersionPath;
+                  writeEmitter.fire(`\r\n[Fallback] Using ${tool}\r\n`);
+                 }
+               }
+             }
+           }
+           else 
+           {
+            writeEmitter.fire(red("\r\n❌ HOME directory not found in environment!\r\n"));
+           }
+         }
 
         if (tool) {
             mklittlefs = tool + path.sep + mklittlefs;
