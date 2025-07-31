@@ -365,6 +365,17 @@ export function activate(context: vscode.ExtensionContext) {
         } else { // ESP8266
             tool = findTool(arduinoContext, "runtime.tools.mklittlefs");
         }
+
+        // ✅ PATCH: Fallback hinzufügen, wenn tool nicht gefunden wurde
+        if (!tool) {
+            // Prüfen, ob mklittlefs direkt im Tools-Ordner existiert
+            const platformPath = arduinoContext.getBuildProperties().get("runtime.platform.path");
+            const fallbackPath = path.join(platformPath, "My", "tools", "mklittlefs");
+            if (fs.existsSync(path.join(fallbackPath, mklittlefs))) {
+                tool = fallbackPath;
+            }
+        }
+
         if (tool) {
             mklittlefs = tool + path.sep + mklittlefs;
         } else {
