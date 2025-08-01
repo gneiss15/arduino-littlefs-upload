@@ -3,8 +3,8 @@ name: Build all and make release on tag
 on:
   workflow_dispatch:
   push:
-    tags:
-    - '*'
+  #  tags:
+  #  - '*'
 
 jobs:
   build-vsix:
